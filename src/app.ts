@@ -1,8 +1,10 @@
 import * as express from 'express'
 import * as logger from 'morgan'
 import * as cors from 'cors'
+import { argv } from 'optimist'
 import {install as SourceMapInstall} from 'source-map-support'
 import { Output } from './lib/Output'
+const port = argv.port || 3000
 SourceMapInstall()
 
 const output = new Output(20, 100);
@@ -29,9 +31,6 @@ app.put('/value', (req, res) => {
   })
 })
 
-app.listen(3000, () => {
-  console.log('listening!')
-  output.on('value', value => {
-    console.log(value)
-  })
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
 })

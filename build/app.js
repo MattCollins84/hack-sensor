@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+const optimist_1 = require("optimist");
 const source_map_support_1 = require("source-map-support");
 const Output_1 = require("./lib/Output");
+const port = optimist_1.argv.port || 3000;
 source_map_support_1.install();
 const output = new Output_1.Output(20, 100);
 output.start();
@@ -26,10 +28,7 @@ app.put('/value', (req, res) => {
         newValue: value
     });
 });
-app.listen(3000, () => {
-    console.log('listening!');
-    output.on('value', value => {
-        console.log(value);
-    });
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
 });
 //# sourceMappingURL=app.js.map
