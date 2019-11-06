@@ -5,7 +5,11 @@ const logger = require("morgan");
 const cors = require("cors");
 const source_map_support_1 = require("source-map-support");
 const Output_1 = require("./lib/Output");
+const { EventHubClient } = require("@azure/event-hubs");
 source_map_support_1.install();
+const connectionString = "Endpoint=sb://mmdl-hack360.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7ZCjP1OtMMyE7e51B/wHbIl58WJZNL277O37Cs/ghwk=";
+const eventHubName = "mmdl";
+const client = EventHubClient.createFromConnectionString(connectionString, eventHubName);
 const output = new Output_1.Output(20, 100);
 output.start();
 const app = express();
@@ -28,8 +32,13 @@ app.put('/value', (req, res) => {
 });
 app.listen(3000, () => {
     console.log('listening!');
-    output.on('value', value => {
-        console.log(value);
+    output.on('value', generatedNum => {
+        console.log(generatedNum);
+        const data = { body: {
+                "data": generatedNum,
+                "tagNumber": "V-33101"
+            } };
+        client.send(data);
     });
 });
 //# sourceMappingURL=app.js.map

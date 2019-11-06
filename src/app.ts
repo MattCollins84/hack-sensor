@@ -3,7 +3,15 @@ import * as logger from 'morgan'
 import * as cors from 'cors'
 import {install as SourceMapInstall} from 'source-map-support'
 import { Output } from './lib/Output'
+const { EventHubClient } = require("@azure/event-hubs");
+
+
 SourceMapInstall()
+
+const connectionString = "Endpoint=sb://mmdl-hack360.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7ZCjP1OtMMyE7e51B/wHbIl58WJZNL277O37Cs/ghwk=";
+const eventHubName = "mmdl"
+
+const client = EventHubClient.createFromConnectionString(connectionString, eventHubName);
 
 const output = new Output(20, 100);
 output.start()
@@ -31,7 +39,12 @@ app.put('/value', (req, res) => {
 
 app.listen(3000, () => {
   console.log('listening!')
-  output.on('value', value => {
-    console.log(value)
+  output.on('value', generatedNum => {
+    console.log(generatedNum)
+    const data = {body: {
+      "data": generatedNum,
+      "tagNumber": "V-33101"
+    }}
+    client.send(data);
   })
 })
