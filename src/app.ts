@@ -1,10 +1,12 @@
 import * as express from 'express'
 import * as logger from 'morgan'
 import * as cors from 'cors'
+import { argv } from 'optimist'
 import {install as SourceMapInstall} from 'source-map-support'
 import { Output } from './lib/Output'
 const { EventHubClient } = require("@azure/event-hubs");
 
+const port = argv.port || 3000
 
 SourceMapInstall()
 
@@ -37,7 +39,7 @@ app.put('/value', (req, res) => {
   })
 })
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log('listening!')
   output.on('value', generatedNum => {
     console.log(generatedNum)
@@ -47,4 +49,5 @@ app.listen(3000, () => {
     }}
     client.send(data);
   })
+
 })
