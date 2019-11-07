@@ -36,7 +36,7 @@ class Output extends events_1.EventEmitter {
         const diff = this.randomNumber(1, threshold);
         const val = (d.getMilliseconds() % 2 === 0) ? this.previousValue - diff : this.previousValue + diff;
         this.previousValue = val >= this.value - diff && val <= this.value + diff ? val : (d.getMilliseconds() % 2 === 0) ? this.value - diff : this.value + diff;
-        return this.previousValue;
+        return this.previousValue >= 0 ? this.previousValue : 0;
     }
     changeValue(newValue) {
         this.value = newValue;

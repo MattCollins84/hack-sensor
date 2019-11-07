@@ -12,17 +12,13 @@ source_map_support_1.install();
 const connectionString = "Endpoint=sb://mmdl-hack360.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7ZCjP1OtMMyE7e51B/wHbIl58WJZNL277O37Cs/ghwk=";
 const eventHubName = "mmdl";
 const client = EventHubClient.createFromConnectionString(connectionString, eventHubName);
-const output = new Output_1.Output(20, 100);
+const output = new Output_1.Output(30, 200);
 output.start();
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(logger('dev'));
-app.get('/', (req, res) => {
-    res.json({
-        foo: true
-    });
-});
+app.use(express.static('./public'));
 app.put('/value', (req, res) => {
     let { value = output.currentValue } = req.body;
     value = isNaN(Number(value)) ? output.currentValue : Number(value);
@@ -33,12 +29,13 @@ app.put('/value', (req, res) => {
     });
 });
 app.listen(port, () => {
-    console.log('listening!');
+    console.log(`listening on ${port}`);
     output.on('value', generatedNum => {
         console.log(generatedNum);
         const data = { body: {
                 "data": generatedNum,
-                "tagNumber": "V-33101"
+                "tagNumber": "MCD-20-KX-1005",
+                "ts": Date.now()
             } };
         client.send(data);
     });

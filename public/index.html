@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Control Panel</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-m">
+          <h1>Set the pressure</h1>
+          <button class="btn btn-primary" onclick="setPressure(0)">0</button>
+          <button class="btn btn-primary" onclick="setPressure(10)">10</button>
+          <button class="btn btn-primary" onclick="setPressure(20)">20</button>
+          <button class="btn btn-primary" onclick="setPressure(30)">30</button>
+          <button class="btn btn-primary" onclick="setPressure(40)">40</button>
+          <button class="btn btn-primary" onclick="setPressure(50)">50</button>
+        </div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+    
+      const setPressure = (pressure) => {
+        axios.put('/value', { value: pressure })
+      }  
+
+    </script>
+  </body>
+</html>

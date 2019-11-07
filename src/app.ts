@@ -15,19 +15,14 @@ const eventHubName = "mmdl"
 
 const client = EventHubClient.createFromConnectionString(connectionString, eventHubName);
 
-const output = new Output(20, 100);
+const output = new Output(30, 200);
 output.start()
 
 const app = express();
 app.use(express.json())
 app.use(cors())
 app.use(logger('dev'))
-
-app.get('/', (req, res) => {
-  res.json({
-    foo: true
-  })
-})
+app.use(express.static('./public'))
 
 app.put('/value', (req, res) => {
   let { value = output.currentValue } = req.body
@@ -40,12 +35,13 @@ app.put('/value', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log('listening!')
+  console.log(`listening on ${port}`)
   output.on('value', generatedNum => {
     console.log(generatedNum)
     const data = {body: {
       "data": generatedNum,
-      "tagNumber": "V-33101"
+      "tagNumber": "MCD-20-KX-1005",
+      "ts": Date.now()
     }}
     client.send(data);
   })
