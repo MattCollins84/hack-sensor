@@ -11,7 +11,7 @@ const port = optimist_1.argv.port || 3000;
 const interval = optimist_1.argv.interval || 200;
 const startPressure = optimist_1.argv.pressure || 30;
 const env = optimist_1.argv.env || 'dev';
-const tagNumber = env === 'dev' ? "MCD-20-KX-1005" : "MCD-20-KX-1011";
+const tagNumber = env === 'dev' ? "MCD-20-KX-1005" : "MCD-20-KX-2020";
 source_map_support_1.install();
 const connectionString = "Endpoint=sb://mmdl-hack360.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7ZCjP1OtMMyE7e51B/wHbIl58WJZNL277O37Cs/ghwk=";
 const eventHubName = "mmdl";
