@@ -11,7 +11,7 @@ const interval = argv.interval || 200
 const startPressure = argv.pressure || 30
 const env = argv.env || 'dev'
 
-const tagNumber = env === 'dev' ? "MCD-20-KX-1005" : "MCD-20-KX-1009"
+const tagNumber = env === 'dev' ? "MCD-20-KX-1005" : "MCD-20-KX-1011"
 
 SourceMapInstall()
 
