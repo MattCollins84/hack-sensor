@@ -7,8 +7,10 @@ export class Output extends EventEmitter {
   private interval: number = null;
   private timer: NodeJS.Timer= null;
 
-  constructor(initialValue: number, interval: number = 1000) {
+  constructor(initialValue: number = 30, interval: number = 1000) {
     super();
+    initialValue = Number(initialValue);
+    initialValue = isNaN(initialValue) ? 30 : initialValue
     this.value = initialValue;
     this.previousValue = initialValue;
     this.interval = interval;
@@ -36,7 +38,7 @@ export class Output extends EventEmitter {
 
   getValue() {
     const d = new Date();
-    const threshold = this.value * 0.1
+    const threshold = this.value * 0.05
     const diff = this.randomNumber(1, threshold)
     const val = (d.getMilliseconds() % 2 === 0) ? this.previousValue - diff : this.previousValue + diff
     this.previousValue = val >= this.value - diff && val <= this.value + diff ? val : (d.getMilliseconds() % 2 === 0) ? this.value - diff : this.value + diff;

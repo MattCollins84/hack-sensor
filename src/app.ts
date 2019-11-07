@@ -7,6 +7,11 @@ import { Output } from './lib/Output'
 const { EventHubClient } = require("@azure/event-hubs");
 
 const port = argv.port || 3000
+const interval = argv.interval || 200
+const startPressure = argv.pressure || 30
+const env = argv.env || 'dev'
+
+const tagNumber = env === 'dev' ? "MCD-20-KX-1005" : "MCD-20-KX-1009"
 
 SourceMapInstall()
 
@@ -15,7 +20,7 @@ const eventHubName = "mmdl"
 
 const client = EventHubClient.createFromConnectionString(connectionString, eventHubName);
 
-const output = new Output(30, 200);
+const output = new Output(startPressure, interval);
 output.start()
 
 const app = express();
@@ -40,7 +45,7 @@ app.listen(port, () => {
     console.log(generatedNum)
     const data = {body: {
       "data": generatedNum,
-      "tagNumber": "MCD-20-KX-1005",
+      "tagNumber": tagNumber,
       "ts": Date.now()
     }}
     client.send(data);

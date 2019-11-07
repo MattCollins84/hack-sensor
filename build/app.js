@@ -8,11 +8,15 @@ const source_map_support_1 = require("source-map-support");
 const Output_1 = require("./lib/Output");
 const { EventHubClient } = require("@azure/event-hubs");
 const port = optimist_1.argv.port || 3000;
+const interval = optimist_1.argv.interval || 200;
+const startPressure = optimist_1.argv.pressure || 30;
+const env = optimist_1.argv.env || 'dev';
+const tagNumber = env === 'dev' ? "MCD-20-KX-1005" : "MCD-20-KX-1009";
 source_map_support_1.install();
 const connectionString = "Endpoint=sb://mmdl-hack360.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7ZCjP1OtMMyE7e51B/wHbIl58WJZNL277O37Cs/ghwk=";
 const eventHubName = "mmdl";
 const client = EventHubClient.createFromConnectionString(connectionString, eventHubName);
-const output = new Output_1.Output(30, 200);
+const output = new Output_1.Output(startPressure, interval);
 output.start();
 const app = express();
 app.use(express.json());
@@ -34,7 +38,7 @@ app.listen(port, () => {
         console.log(generatedNum);
         const data = { body: {
                 "data": generatedNum,
-                "tagNumber": "MCD-20-KX-1005",
+                "tagNumber": tagNumber,
                 "ts": Date.now()
             } };
         client.send(data);
